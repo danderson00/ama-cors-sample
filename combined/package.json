@@ -1,0 +1,9 @@
+{
+  "name": "ama-cors-sample.combined",
+  "version": "1.0.0",
+  "description": "CORS sample combined client and server",
+  "dependencies": {
+    "express": "^4.13.3",
+    "azure-mobile-apps": "^2.0.0-beta2"
+  }
+}
