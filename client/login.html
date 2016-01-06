@@ -1,0 +1,39 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="MobileServices.Web.js"></script>
+    <script src="//js.live.net/v5.0/wl.js"></script>
+    <script>
+        $(() => {
+            var client = new WindowsAzure.MobileServiceClient("https://dacors.azurewebsites.net/")
+
+            WL.init({
+                client_id: '00000000441755C1',
+                redirect_uri: window.location.href,
+                scope: ["wl.signin", "wl.signin"],
+                response_type: "token"
+            }).then(function () {
+                $('body').append("initialised")
+            }, handleError)
+
+            $('button').click(function () {
+                WL.login({ scope: "wl.basic"})
+                    .then(function (result) {
+                        client.login("microsoftaccount", {"authenticationToken": result.session.authentication_token})
+                            .done(function(results){
+                                alert("You are now logged in as: " + results.userId)
+                            }, handleError)
+                    }, handleError)
+            })
+
+            function handleError(error) {
+                $('body').append(error)
+                console.log(error)
+            }
+        })
+    </script>
+</head>
+<body>
+    <button>Login</button>
+</body>
+</html>

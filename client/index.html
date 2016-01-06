@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="MobileServices.Web.js"></script>
+        <script>
+            $(function () {
+                var client = new WindowsAzure.MobileServiceClient("https://dacors.azurewebsites.net/"),
+                    table = client.getTable('todoitem')
+
+                $('button').click(insertItem)
+                refreshItems()
+
+                function refreshItems() {
+                    table.read().then(function (results) {
+                        $('div').text(JSON.stringify(results))
+                    }, handleError)
+                }
+
+                function insertItem() {
+                    table.insert({ text: $('input').val() }).then(refreshItems, handleError)
+                }
+
+                function handleError(error) {
+                    $('div').text(error)
+                }
+            })
+        </script>
+    </head>
+
+    <body>
+        <input /><button>Save</button>
+        <div></div>
+    </body>
+</html>
