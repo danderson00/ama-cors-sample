@@ -5,24 +5,31 @@
     <script src="//js.live.net/v5.0/wl.js"></script>
     <script>
         $(() => {
-            var client = new WindowsAzure.MobileServiceClient("https://dacors.azurewebsites.net/")
+            var client = new WindowsAzure.MobileServiceClient("https://localhost:3000/")
 
-            WL.init({
-                client_id: '00000000441755C1',
-                redirect_uri: window.location.href,
-                scope: ["wl.signin", "wl.signin"],
-                response_type: "token"
-            }).then(function () {
-                $('body').append("initialised")
-            }, handleError)
 
-            $('button').click(function () {
-                WL.login({ scope: "wl.basic"})
-                    .then(function (result) {
-                        client.login("microsoftaccount", {"authenticationToken": result.session.authentication_token})
-                            .done(function(results){
-                                alert("You are now logged in as: " + results.userId)
-                            }, handleError)
+            $('#client').click(function () {
+                WL.init({
+                    client_id: '00000000441755C1',
+                    redirect_uri: window.location.href,
+                    scope: ["wl.signin", "wl.signin"],
+                    response_type: "token"
+                }).then(function () {
+                    $('body').append("initialised")
+                    WL.login({ scope: "wl.basic"})
+                        .then(function (result) {
+                            client.login("microsoftaccount", {"authenticationToken": result.session.authentication_token})
+                                .done(function(results){
+                                    alert("You are now logged in as: " + results.userId)
+                                }, handleError)
+                        }, handleError)
+                }, handleError)
+            })
+
+            $('#server').click(function () {
+                client.login("facebook")
+                    .done(function(results){
+                        alert("You are now logged in as: " + results.userId)
                     }, handleError)
             })
 
@@ -34,6 +41,7 @@
     </script>
 </head>
 <body>
-    <button>Login</button>
+    <button id="client">Client</button>
+    <button id="server">Server</button>
 </body>
 </html>

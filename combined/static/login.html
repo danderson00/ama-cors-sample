@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="MobileServices.Web.js"></script>
+    <script src="//js.live.net/v5.0/wl.js"></script>
+    <script>
+        $(function () {
+            var client = new WindowsAzure.MobileServiceClient("https://localhost:3000/")
+
+            $('#server').click(function () {
+                client.login("facebook")
+                    .done(function(results){
+                        $('body').append("You are now logged in as: " + results.userId + "<br/>")
+                    }, handleError)
+            })
+
+            function handleError(error) {
+                $('body').append(error)
+                console.log(error)
+            }
+        })
+    </script>
+</head>
+<body>
+    <button id="server">Server</button>
+</body>
+</html>
